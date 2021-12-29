@@ -5,7 +5,9 @@
  */
 package remotecursor;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.MouseInfo;
 import java.awt.Point;
@@ -15,6 +17,7 @@ import java.awt.event.MouseListener;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -27,43 +30,44 @@ public class Client extends Frame implements MouseListener {
 
     static JLabel label1, label2, label3, label4;
     static boolean clicked = false;
-    
-    Client(){
-        
+
+    Client() {
+
     }
-    
+
     public static void main(String[] args) {
-        JFrame f = new JFrame("MouseListener");
-        
-        f.setSize(1000,1000);
-        
+        JFrame f = new JFrame("Kelompok 06 MI3F | Remote Cursor");
+        f.getContentPane().setLayout(new FlowLayout());
+        f.setSize(1000, 1000);
+        f.getContentPane().setBackground(new Color(51, 51, 51));
+        f.setLocationRelativeTo(null);
+        f.setResizable(false);
+        f.setVisible(true);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
         JPanel p = new JPanel();
-        
+        p.setBackground(new Color(51, 51, 51));
         p.setLayout(new FlowLayout());
-        
-        label1 = new JLabel("no Event ");
-        
-        label2 = new JLabel("no Event ");
-        
-        label3 = new JLabel("no Event ");
-        
-        label4 = new JLabel("no Event ");
-        
+
+        label1 = new JLabel("[-]     ");
+        label1.setFont(new Font("Consolas", Font.BOLD, 15));
+        label1.setForeground(Color.white);
+
+        label2 = new JLabel("[-] ");
+        label2.setFont(new Font("Consolas", Font.BOLD, 15));
+        label2.setForeground(Color.white);
+
         Client client = new Client();
-        
+
         f.addMouseListener(client);
-        
+
         p.add(label1);
         p.add(label2);
-        p.add(label3);
-        p.add(label4);
-        
+
         f.add(p);
-        
+
         f.show();
-        
+
         try {
             PointerInfo pointI;
             Point point;
@@ -71,17 +75,17 @@ public class Client extends Frame implements MouseListener {
             InetAddress ia = InetAddress.getByName("localhost");
             int port = 1111;
             String pesan = "";
-            
-            while(true){
+
+            while (true) {
                 pointI = MouseInfo.getPointerInfo();
                 point = pointI.getLocation();
                 x = (int) point.getX();
                 y = (int) point.getY();
-                if(clicked){
-                    pesan = String.valueOf(x) + "|" + String.valueOf(y) + "| clicked";
+                if (clicked) {
+                    pesan = "x:" + String.valueOf(x) + " | " + "y:" + String.valueOf(y) + "| clicked";
                     clicked = false;
-                }else{
-                    pesan = String.valueOf(x) + "|" + String.valueOf(y) + "| not";
+                } else {
+                    pesan = "x:" + String.valueOf(x) + " | " + "y:" + String.valueOf(y);
                 }
                 System.out.println(pesan);
                 byte[] data = pesan.getBytes();
@@ -89,7 +93,7 @@ public class Client extends Frame implements MouseListener {
                 DatagramSocket ds = new DatagramSocket();
                 Thread.sleep(100);
                 ds.send(dp);
-                label4.setText("Mouse Location : x = " + x + " | y = " + y);
+                label2.setText("[Koordinat Cursor x : " + x + " | y : " + y + "]");
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -98,18 +102,18 @@ public class Client extends Frame implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.      
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        label1.setText("mouse pressed at point: " + e.getX() + " " + e.getY());
+        label1.setText("[Koordinat Cursor (Click) x : " + e.getX() + " | y : " + e.getY() + "]     ");
         clicked = true;
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        label1.setText("mouse released at point: " + e.getX() + " " + e.getY());
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -119,7 +123,7 @@ public class Client extends Frame implements MouseListener {
 
     @Override
     public void mouseExited(MouseEvent e) {
-        label2.setText("mouse exited trough point: " + e.getX() + " " + e.getY());
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }
